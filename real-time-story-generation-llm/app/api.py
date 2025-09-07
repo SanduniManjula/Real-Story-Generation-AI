@@ -66,6 +66,7 @@ async def generate(request: StoryRequest):
         f"in {request.controls.style} style, from {request.controls.pov} point of view. "
         f"Constraints: {request.controls.constraints}. "
         f"Story seed: {request.prompt}\n### Response: "
+
     )
 
     inputs = tokenizer(final_prompt, return_tensors="pt")
