@@ -25,45 +25,38 @@ user_prompt = st.text_area("Your story seed:", placeholder="A lighthouse keeper 
 
 col1, col2 = st.columns([2, 1])
 with col2:
-    if st.button("Generate", type="primary", use_container_width=True):
-        if not user_prompt.strip():
-            st.warning("Please enter a story seed.")
-        else:
-            controls = dict(style=style, pov=pov, length=length, genre=genre, constraints="avoid explicit content")
-            gen = dict(temperature=temperature, top_p=top_p, top_k=top_k, repetition_penalty=repetition_penalty, max_new_tokens=512)
+    generate_clicked = st.button("Generate", type="primary", use_container_width=True)
+
+if generate_clicked:
+    if not user_prompt.strip():
+        st.warning("Please enter a story seed.")
+    else:
+        controls = dict(style=style, pov=pov, length=length, genre=genre, constraints="avoid explicit content")
+        gen = dict(temperature=temperature, top_p=top_p, top_k=top_k, repetition_penalty=repetition_penalty, max_new_tokens=512)
             
-            with st.spinner("Generating..."):
-                try:
-                    resp = requests.post(
-                        API_URL,
-                        json={"prompt": user_prompt, "controls": controls, "gen": gen},
-                        stream=True,
-                        timeout=300
-                    )
-                    resp.raise_for_status()
+        with st.spinner("Generating..."):
+            try:
+                resp = requests.post(
+                    API_URL,
+                    json={"prompt": user_prompt, "controls": controls, "gen": gen},
+                    stream=True,
+                    timeout=300
+                )
+                resp.raise_for_status()
 
-                    st.session_state["story"] = ""
-                    story_box = st.empty()
+                story_text = ""
+                story_box = st.empty()
 
-                    for chunk in resp.iter_content(chunk_size=1024):
-                        if chunk:
-                            st.session_state["story"] += chunk.decode("utf-8", errors="ignore")
-                           # story_box.markdown("```" + st.session_state["story"] + "```")
-                            story_box.markdown(
-                                f"<div style='text-align: justify'>{st.session_state['story'].replace(chr(10), '<br>')}</div>",
-                                unsafe_allow_html=True
-                            )
+                for chunk in resp.iter_content(chunk_size=1024):
+                    if chunk:
+                        story_text += chunk.decode("utf-8", errors="ignore")
+                        story_box.markdown(
+                            f"<div style='text-align: justify; font-size:16px; line-height:1.6;'>{story_text}</div>",
+                            unsafe_allow_html=True
+                        )
 
-                except requests.exceptions.ChunkedEncodingError:
-                    st.error("Connection interrupted. Please try again.")
-                except requests.exceptions.RequestException as e:
-                    st.error(f"Request failed: {e}")
-
-with col1:
-    st.subheader("Output")
-    #st.markdown("```" + st.session_state.get("story", "") + "```")
-    st.markdown(
-    f"<div style='text-align: justify; font-size: 16px; line-height: 1.6;'>{st.session_state.get('story', '')}</div>",
-    unsafe_allow_html=True
-)
+            except requests.exceptions.ChunkedEncodingError:
+                st.error("Connection interrupted. Please try again.")
+            except requests.exceptions.RequestException as e:
+                st.error(f"Request failed: {e}")
 
