@@ -5,3 +5,5 @@ data/
 .env
 .streamlit/
 .ipynb_checkpoints/
+models/
+requirements.txt
