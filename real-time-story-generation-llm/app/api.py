@@ -64,7 +64,7 @@ async def generate(request: StoryRequest):
         f"{FEW_SHOT_EXAMPLES}\n"
         f"### Instruction: Write a {request.controls.length} {request.controls.genre} story "
         f"in {request.controls.style} style, from {request.controls.pov} point of view. "
-        f"Constraints: {request.controls.constraints}. "
+        f"Constraints: {request.controls.constraints}.\n "
         f"Story seed: {request.prompt}\n### Response: "
     )
 
