@@ -15,7 +15,6 @@ MODEL_DIR = "./models/gpt2-fairytales3"
 # Download if not exists
 if not os.path.exists(MODEL_DIR):
     os.makedirs(MODEL_DIR, exist_ok=True)
-    # use --folder to download everything
     gdown.download_folder(DRIVE_URL, output=MODEL_DIR, quiet=False, use_cookies=False)
 
 # Load model
@@ -23,22 +22,49 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
 model = AutoModelForCausalLM.from_pretrained(MODEL_DIR)
 
 
+class Controls(BaseModel):
+    style: str
+    pov: str
+    length: str
+    genre: str
+    constraints: str = "avoid explicit content"
+
+
+class GenConfig(BaseModel):
+    temperature: float = 0.9
+    top_p: float = 0.9
+    top_k: int = 50
+    repetition_penalty: float = 1.1
+    max_new_tokens: int = 300
+
+
 class StoryRequest(BaseModel):
     prompt: str
+    controls: Controls
+    gen: GenConfig
 
 
 @app.post("/generate", response_class=PlainTextResponse)
 async def generate(request: StoryRequest):
-    inputs = tokenizer(request.prompt, return_tensors="pt")
+    # Build enriched prompt
+    final_prompt = (
+        f"Write a {request.controls.length} {request.controls.genre} story "
+        f"in {request.controls.style} style, from {request.controls.pov} point of view. "
+        f"Constraints: {request.controls.constraints}. "
+        f"Story seed: {request.prompt}\n"
+    )
+
+    inputs = tokenizer(final_prompt, return_tensors="pt")
     print("Generating story...")
+
     outputs = model.generate(
         **inputs,
-        max_length=300,
+        max_new_tokens=request.gen.max_new_tokens,
         do_sample=True,
-        temperature=0.9,
-        top_k=50,
-        top_p=0.9,
-        repetition_penalty=1.2,
+        temperature=request.gen.temperature,
+        top_k=request.gen.top_k,
+        top_p=request.gen.top_p,
+        repetition_penalty=request.gen.repetition_penalty,
         num_return_sequences=1,
     )
 
