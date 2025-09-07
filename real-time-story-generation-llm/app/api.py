@@ -68,8 +68,10 @@ async def generate(request: StoryRequest):
         num_return_sequences=1,
     )
 
-    story = tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
-    story = re.split(r"<\|endofstory\|>.*$", story)[0].strip()
-    story = story.replace("\n", " ").replace("\r", " ").strip()
+    decoded = tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
+    continuation = decoded[len(final_prompt):].strip()
+    continuation = re.split(r"<\|endofstory\|>.*$", continuation)[0].strip()
+    continuation = continuation.replace("\n", " ").replace("\r", " ").strip()
 
+    story = f"{request.prompt}{continuation}"
     return story
