@@ -48,7 +48,11 @@ with col2:
                     for chunk in resp.iter_content(chunk_size=1024):
                         if chunk:
                             st.session_state["story"] += chunk.decode("utf-8", errors="ignore")
-                            story_box.markdown("```" + st.session_state["story"] + "```")
+                           # story_box.markdown("```" + st.session_state["story"] + "```")
+                            story_box.markdown(
+                                f"<div style='text-align: justify'>{st.session_state['story'].replace(chr(10), '<br>')}</div>",
+                                unsafe_allow_html=True
+                            )
 
                 except requests.exceptions.ChunkedEncodingError:
                     st.error("Connection interrupted. Please try again.")
@@ -57,4 +61,9 @@ with col2:
 
 with col1:
     st.subheader("Output")
-    st.markdown("```" + st.session_state.get("story", "") + "```")
+    #st.markdown("```" + st.session_state.get("story", "") + "```")
+    st.markdown(
+    f"<div style='text-align: justify; font-size: 16px; line-height: 1.6;'>{st.session_state.get('story', '')}</div>",
+    unsafe_allow_html=True
+)
+
