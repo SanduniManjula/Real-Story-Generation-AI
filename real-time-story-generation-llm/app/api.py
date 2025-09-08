@@ -94,5 +94,4 @@ async def generate(request: StoryRequest):
     continuation = continuation.replace("\n", " ").replace("\r", " ").strip()
 
     story = f"{request.prompt}{continuation}"
-    print("TEST PIPELINE: Story generated")
     return story
