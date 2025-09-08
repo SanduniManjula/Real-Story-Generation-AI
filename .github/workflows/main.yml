@@ -26,6 +26,6 @@ jobs:
       - name: Run tests
         run: |
           cd real-time-story-generation-llm
-          PYTHONPATH=src pytest -q tests
+          pytest -q tests
       - name: Build Docker image
         run: docker build -t story-rt:latest ./real-time-story-generation-llm
