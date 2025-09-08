@@ -18,8 +18,6 @@ def evaluate_file(path: str):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument(
-        "--path", required=True, help="Path to generated story .txt"
-    )
+    ap.add_argument("--path", required=True, help="Path to generated story .txt")
     args = ap.parse_args()
     print(json.dumps(evaluate_file(args.path), indent=2))

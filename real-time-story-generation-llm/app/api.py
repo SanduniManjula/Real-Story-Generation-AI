@@ -10,9 +10,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 app = FastAPI()
 
 # Google Drive folder link
-DRIVE_URL = (
-    "https://drive.google.com/drive/folders/1qsiiHUM2g6JjrFX9uN7v3jVEkoJGtcIu"
-)
+DRIVE_URL = "https://drive.google.com/drive/folders/1qsiiHUM2g6JjrFX9uN7v3jVEkoJGtcIu"
 MODEL_DIR = "./models/gpt2-fairytales3"
 
 FEW_SHOT_EXAMPLES = (
@@ -39,13 +37,10 @@ FEW_SHOT_EXAMPLES = (
 )
 
 
-
 # Download if not exists
 if not os.path.exists(MODEL_DIR):
     os.makedirs(MODEL_DIR, exist_ok=True)
-    gdown.download_folder(
-        DRIVE_URL, output=MODEL_DIR, quiet=False, use_cookies=False
-    )
+    gdown.download_folder(DRIVE_URL, output=MODEL_DIR, quiet=False, use_cookies=False)
 
 # Load model
 tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)

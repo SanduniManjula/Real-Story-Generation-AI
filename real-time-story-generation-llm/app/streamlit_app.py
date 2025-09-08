@@ -54,9 +54,7 @@ user_prompt = st.text_area(
 
 col1, col2 = st.columns([2, 1])
 with col2:
-    generate_clicked = st.button(
-        "Generate", type="primary", use_container_width=True
-    )
+    generate_clicked = st.button("Generate", type="primary", use_container_width=True)
 
 if generate_clicked:
     if not user_prompt.strip():
