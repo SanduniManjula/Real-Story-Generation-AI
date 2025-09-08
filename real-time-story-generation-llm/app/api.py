@@ -86,6 +86,11 @@ async def generate(request: StoryRequest):
     decoded = tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
     continuation = decoded[len(final_prompt):].strip()
     continuation = re.split(r"<\|endofstory\|>.*$", continuation)[0].strip()
+    
+    # last_dot_index = continuation.rfind(".")
+    # if last_dot_index != -1:
+    #     continuation = continuation[: last_dot_index + 1]
+
     continuation = continuation.replace("\n", " ").replace("\r", " ").strip()
 
     story = f"{request.prompt}{continuation}"
