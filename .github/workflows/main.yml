@@ -23,6 +23,8 @@ jobs:
       - name: Check code formatting
         run: black --check real-time-story-generation-llm
       - name: Run tests
-        run: pytest -q
+        run: |
+          export PYTHONPATH=real-time-story-generation-llm/src
+          pytest -q
       - name: Build Docker image
         run: docker build -t story-rt:latest ./real-time-story-generation-llm
