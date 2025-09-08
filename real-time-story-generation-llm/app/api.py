@@ -105,5 +105,6 @@ async def generate(request: StoryRequest):
 
     continuation = continuation.replace("\n", " ").replace("\r", " ").strip()
 
+    print("Test workflow.")
     story = f"{request.prompt}{continuation}"
     return story
