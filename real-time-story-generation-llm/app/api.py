@@ -10,25 +10,42 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 app = FastAPI()
 
 # Google Drive folder link
-DRIVE_URL = "https://drive.google.com/drive/folders/1qsiiHUM2g6JjrFX9uN7v3jVEkoJGtcIu"
+DRIVE_URL = (
+    "https://drive.google.com/drive/folders/1qsiiHUM2g6JjrFX9uN7v3jVEkoJGtcIu"
+)
 MODEL_DIR = "./models/gpt2-fairytales3"
 
-FEW_SHOT_EXAMPLES = """
-### Instruction: Write a short whimsical story in third-person POV. Story seed: A lonely dragon guards a glowing crystal deep inside a mountain.
-### Response: Deep within a misty cavern, a dragon curled around a glowing crystal, humming softly. For centuries, he waited for a friend brave enough to visit. One day, a small child entered the cavern, smiling instead of trembling. The dragon blinked in surprise, and warmth filled the cavern. The crystal’s glow softened, no longer a warning but a welcome. The dragon was lonely no more. The End.
+FEW_SHOT_EXAMPLES = (
+    "### Instruction: Write a short whimsical story in third-person POV. "
+    "Story seed: A lonely dragon guards a glowing crystal deep inside a mountain.\n"
+    "### Response: Deep within a misty cavern, a dragon curled around a glowing crystal, "
+    "humming softly. For centuries, he waited for a friend brave enough to visit. "
+    "One day, a small child entered the cavern, smiling instead of trembling. "
+    "The dragon blinked in surprise, and warmth filled the cavern. "
+    "The crystal’s glow softened, no longer a warning but a welcome. "
+    "The dragon was lonely no more. The End.\n\n"
+    "### Instruction: Write a magical fairytale in first-person POV. "
+    "Story seed: I found an old music box buried in the sand.\n"
+    "### Response: I brushed away the sand, and the music box sang a tune I somehow remembered. "
+    "The melody drifted across the shore, and the waves glimmered with light. "
+    "A door of moonlight appeared, inviting me in. "
+    "I stepped through, humming the melody, and vanished into the song. The End.\n\n"
+    "### Instruction: Write a short adventure story in mythic style, third-person POV. "
+    "Story seed: A knight sets out to find the last phoenix.\n"
+    "### Response: The knight rode through forests of ash, following faint traces of flame. "
+    "At last, in a quiet valley, he found the phoenix—gentle and radiant. "
+    "It sang a song of rebirth, and the knight lowered his sword. "
+    "From that day, peace returned to the kingdom. The End."
+)
 
-### Instruction: Write a magical fairytale in first-person POV. Story seed: I found an old music box buried in the sand.
-### Response: I brushed away the sand, and the music box sang a tune I somehow remembered. The melody drifted across the shore, and the waves glimmered with light. A door of moonlight appeared, inviting me in. I stepped through, humming the melody, and vanished into the song. The End.
-
-### Instruction: Write a short adventure story in mythic style, third-person POV. Story seed: A knight sets out to find the last phoenix.
-### Response: The knight rode through forests of ash, following faint traces of flame. At last, in a quiet valley, he found the phoenix—gentle and radiant. It sang a song of rebirth, and the knight lowered his sword. From that day, peace returned to the kingdom. The End.
-"""
 
 
 # Download if not exists
 if not os.path.exists(MODEL_DIR):
     os.makedirs(MODEL_DIR, exist_ok=True)
-    gdown.download_folder(DRIVE_URL, output=MODEL_DIR, quiet=False, use_cookies=False)
+    gdown.download_folder(
+        DRIVE_URL, output=MODEL_DIR, quiet=False, use_cookies=False
+    )
 
 # Load model
 tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)

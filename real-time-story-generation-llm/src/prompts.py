@@ -1,8 +1,9 @@
 from typing import Dict
 
-SYSTEM_STYLE_GUIDE = """
-You are an award-winning storyteller. Write vivid, engaging prose that balances plot momentum with sensory detail. Keep the language accessible.
-"""
+SYSTEM_STYLE_GUIDE = (
+    "You are an award-winning storyteller. Write vivid, engaging prose that "
+    "balances plot momentum with sensory detail. Keep the language accessible."
+)
 
 
 def build_prompt(user_prompt: str, controls: Dict) -> str:
@@ -14,6 +15,9 @@ def build_prompt(user_prompt: str, controls: Dict) -> str:
         "constraints", "avoid explicit content; suitable for all ages"
     )
 
-    guide = f"Style: {style}. POV: {pov}. Length: {length}. Genre: {genre}. Constraints: {constraints}."
+    guide = (
+        f"Style: {style}. POV: {pov}. Length: {length}. Genre: {genre}. "
+        f"Constraints: {constraints}."
+    )
     seed = f"Story seed: {user_prompt.strip()}"
     return f"{SYSTEM_STYLE_GUIDE}\n{guide}\n{seed}\nNow write the story."

@@ -1,4 +1,3 @@
-import json
 import os
 import time
 from typing import Dict, Generator, Optional
@@ -45,7 +44,10 @@ class HFClient:
             "Content-Type": "application/json",
         }
         resp = requests.post(
-            url, headers=headers, json=self._payload(prompt, gen), timeout=TIMEOUT
+            url,
+            headers=headers,
+            json=self._payload(prompt, gen),
+            timeout=TIMEOUT,
         )
         resp.raise_for_status()
         data = resp.json()
