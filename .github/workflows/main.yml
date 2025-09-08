@@ -20,12 +20,12 @@ jobs:
         run: |
           cd real-time-story-generation-llm
           pip install -r requirements.txt
-          pip install -e .
       - name: Check code formatting
         run: black --check real-time-story-generation-llm
       - name: Run tests
         run: |
           cd real-time-story-generation-llm
+          pip install -e .
           pytest -q tests
       - name: Build Docker image
         run: docker build -t story-rt:latest ./real-time-story-generation-llm
