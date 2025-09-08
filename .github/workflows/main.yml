@@ -21,7 +21,7 @@ jobs:
           cd real-time-story-generation-llm
           pip install -r requirements.txt
       - name: Check code formatting
-        run: black --check --line-length 100 real-time-story-generation-llm
+        run: black --check real-time-story-generation-llm
       - name: Run tests
         run: |
           export PYTHONPATH=real-time-story-generation-llm/src
