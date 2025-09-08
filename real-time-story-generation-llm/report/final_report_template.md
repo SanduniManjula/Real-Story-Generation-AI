@@ -11,7 +11,7 @@
 
 ## 3. Methodology
 
-- Model: GOAT-70B-Storytelling (hosted).
+- Model: gpt2-medium (hosted).
 - Prompt-engineering: system/style/pov/genre/constraints.
 - Safety & content policy.
 
