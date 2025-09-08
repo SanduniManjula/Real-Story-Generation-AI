@@ -1,5 +1,4 @@
 import os
-import sys
 
 import requests
 import streamlit as st
@@ -18,7 +17,14 @@ with st.sidebar:
     st.header("Controls")
     style = st.selectbox(
         "Style",
-        ["classic fairytale", "noir", "sci-fi", "romance", "mythic", "magical realism"],
+        [
+            "classic fairytale",
+            "noir",
+            "sci-fi",
+            "romance",
+            "mythic",
+            "magical realism",
+        ],
     )
     pov = st.selectbox(
         "Point of View", ["first-person", "second-person", "third-person"]
@@ -26,7 +32,14 @@ with st.sidebar:
     length = st.selectbox("Length", ["very short", "short", "medium", "long"])
     genre = st.selectbox(
         "Genre",
-        ["fantasy", "mystery", "adventure", "horror", "slice of life", "comedy"],
+        [
+            "fantasy",
+            "mystery",
+            "adventure",
+            "horror",
+            "slice of life",
+            "comedy",
+        ],
     )
     temperature = st.slider("Temperature", 0.1, 1.5, 0.9, 0.05)
     top_p = st.slider("Top-p", 0.1, 1.0, 0.95, 0.05)
@@ -41,7 +54,9 @@ user_prompt = st.text_area(
 
 col1, col2 = st.columns([2, 1])
 with col2:
-    generate_clicked = st.button("Generate", type="primary", use_container_width=True)
+    generate_clicked = st.button(
+        "Generate", type="primary", use_container_width=True
+    )
 
 if generate_clicked:
     if not user_prompt.strip():
@@ -66,7 +81,11 @@ if generate_clicked:
             try:
                 resp = requests.post(
                     API_URL,
-                    json={"prompt": user_prompt, "controls": controls, "gen": gen},
+                    json={
+                        "prompt": user_prompt,
+                        "controls": controls,
+                        "gen": gen,
+                    },
                     stream=True,
                     timeout=300,
                 )
