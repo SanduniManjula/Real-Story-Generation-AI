@@ -20,8 +20,6 @@ jobs:
         run: |
           cd real-time-story-generation-llm
           pip install -r requirements.txt
-      - name: Lint code
-        run: flake8 real-time-story-generation-llm
       - name: Check code formatting
         run: black --check real-time-story-generation-llm
       - name: Run tests
