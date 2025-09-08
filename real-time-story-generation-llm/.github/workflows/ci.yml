@@ -18,8 +18,10 @@ jobs:
           python-version: "3.11"
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - run: flake8 .
-      - run: black --check .
+      - name: Lint code
+        run: flake8 .
+      - name: Check code formatting
+        run: black --check .
       - name: Run tests
         run: pytest -q
       - name: Build Docker image
