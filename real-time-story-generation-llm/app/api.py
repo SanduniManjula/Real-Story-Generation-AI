@@ -1,10 +1,11 @@
 import os
+import re
+
 import gdown
 from fastapi import FastAPI
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
-import re
 
 app = FastAPI()
 
@@ -22,7 +23,6 @@ FEW_SHOT_EXAMPLES = """
 ### Instruction: Write a short adventure story in mythic style, third-person POV. Story seed: A knight sets out to find the last phoenix.
 ### Response: The knight rode through forests of ash, following faint traces of flame. At last, in a quiet valley, he found the phoenix—gentle and radiant. It sang a song of rebirth, and the knight lowered his sword. From that day, peace returned to the kingdom. The End.
 """
-
 
 
 # Download if not exists
@@ -84,9 +84,9 @@ async def generate(request: StoryRequest):
     )
 
     decoded = tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
-    continuation = decoded[len(final_prompt):].strip()
+    continuation = decoded[len(final_prompt) :].strip()
     continuation = re.split(r"<\|endofstory\|>.*$", continuation)[0].strip()
-    
+
     # last_dot_index = continuation.rfind(".")
     # if last_dot_index != -1:
     #     continuation = continuation[: last_dot_index + 1]

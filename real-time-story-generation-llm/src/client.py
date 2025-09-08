@@ -1,5 +1,9 @@
-import os, json, time, requests
+import json
+import os
+import time
 from typing import Dict, Generator, Optional
+
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,6 +13,7 @@ MODE = os.getenv("ENDPOINT_MODE", "INFERENCE_API")
 MODEL_ID = os.getenv("HF_MODEL_ID", "tiiuae/falcon-7b-instruct")
 ENDPOINT_URL = os.getenv("HF_ENDPOINT_URL")
 TIMEOUT = 300
+
 
 class HFClient:
     def __init__(self):
@@ -27,14 +32,21 @@ class HFClient:
                 "repetition_penalty": gen.get("repetition_penalty", 1.1),
                 "return_full_text": False,
                 "do_sample": True,
-            }
+            },
         }
 
-    def generate_stream(self, prompt: str, gen: Optional[Dict] = None) -> Generator[bytes, None, None]:
+    def generate_stream(
+        self, prompt: str, gen: Optional[Dict] = None
+    ) -> Generator[bytes, None, None]:
         gen = gen or {}
         url = f"https://api-inference.huggingface.co/models/{MODEL_ID}"
-        headers = {"Authorization": f"Bearer {HF_TOKEN}", "Content-Type": "application/json"}
-        resp = requests.post(url, headers=headers, json=self._payload(prompt, gen), timeout=TIMEOUT)
+        headers = {
+            "Authorization": f"Bearer {HF_TOKEN}",
+            "Content-Type": "application/json",
+        }
+        resp = requests.post(
+            url, headers=headers, json=self._payload(prompt, gen), timeout=TIMEOUT
+        )
         resp.raise_for_status()
         data = resp.json()
         if isinstance(data, dict) and "error" in data:
@@ -42,5 +54,5 @@ class HFClient:
         text = data[0].get("generated_text", "")
         step = 25
         for i in range(0, len(text), step):
-            yield text[i:i+step].encode("utf-8")
+            yield text[i : i + step].encode("utf-8")
             time.sleep(0.02)
