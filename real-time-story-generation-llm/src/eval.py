@@ -1,5 +1,8 @@
-import json, argparse
-from src.metrics import distinct_n, repetition_rate, readability
+import argparse
+import json
+
+from src.metrics import distinct_n, readability, repetition_rate
+
 
 def evaluate_file(path: str):
     with open(path, "r", encoding="utf-8") as f:
@@ -11,6 +14,7 @@ def evaluate_file(path: str):
         "readability_flesch": round(readability(text), 2),
         "chars": len(text),
     }
+
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
