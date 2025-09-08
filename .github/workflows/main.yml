@@ -17,12 +17,14 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          cd real-time-story-generation-llm
+          pip install -r requirements.txt
       - name: Lint code
-        run: flake8 .
+        run: flake8 real-time-story-generation-llm
       - name: Check code formatting
-        run: black --check .
+        run: black --check real-time-story-generation-llm
       - name: Run tests
         run: pytest -q
       - name: Build Docker image
-        run: docker build -t story-rt:latest .
+        run: docker build -t story-rt:latest ./real-time-story-generation-llm
