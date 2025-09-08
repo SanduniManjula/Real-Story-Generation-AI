@@ -2,8 +2,6 @@
 
 An end-to-end project that streams short stories in real-time from a Large Language Model, with a prompt-engineering toolkit, evaluation scripts, and an MLOps-ready deployment stack.
 
-**Model (default):** [`GOAT-AI/GOAT-70B-Storytelling`](https://huggingface.co/GOAT-AI/GOAT-70B-Storytelling)
-
 ## Quickstart (Local Dev with Streamlit)
 
 ```bash
@@ -36,9 +34,9 @@ docker run --env-file .env -p 8000:8000 story-rt:latest
 app/                # FastAPI + Streamlit apps
 src/                # core library: prompts, clients, metrics
 notebooks/          # experiments & prompt engineering
-mlops/              # CI/CD, docker, make targets
+mlops/              # CI/CD, docker, make targets , Github actions
 data/               # (gitignored) sample inputs/outputs
-report/             # final report template (10 pages max)
+report/             # final report template
 tests/              # unit tests
 ```
 
